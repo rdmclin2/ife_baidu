@@ -2,6 +2,7 @@ body {
     background-color: #dfdfdf;
     margin: 0;
     padding: 0;
+    font-family: "Microsoft YaHei";
 }
 
 nav {
@@ -30,4 +31,26 @@ nav ul li a:link, nav ul li a:visited {
 
 nav ul li a:hover {
     color: gray;
+}
+
+article {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-right: 2px solid gray;
+    border-bottom: 2px solid gray;
+}
+
+article header {
+    color: gray;
+    font-size: 0.8em;
+}
+
+article header h1 {
+    color: black;
+}
+
+article p {
+    text-indent: 2em;
+    line-height: 2em;
 }
