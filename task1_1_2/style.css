@@ -1,0 +1,33 @@
+body {
+    background-color: #dfdfdf;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #343434;
+}
+
+nav img {
+    width: 56px;
+    height: 56px;
+    margin: 10px 10px 0 10px;
+}
+
+nav ul {
+    float: right;
+}
+
+nav ul li {
+    display: inline;
+    padding: 5px 10px;
+}
+
+nav ul li a:link, nav ul li a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: gray;
+}
