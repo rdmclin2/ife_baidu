@@ -1,0 +1,167 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+    background-color: #dfdfdf;
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei";
+}
+
+.nav-bar {
+    background-color: #343434;
+}
+
+.logo {
+    width: 56px;
+    height: 56px;
+    margin: 10px;
+}
+
+.nav-links {
+    float: right;
+}
+
+.nav-links li {
+    padding: 5px;
+    display: inline;
+    text-align:center;
+}
+
+.nav-links li a:link, .nav-links li a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links li a:hover {
+    color: gray;
+}
+
+.contents {
+    margin-right: 420px;
+}
+
+article,aside{
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-right: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+}
+
+aside.right {
+    float:right;
+    width: 400px;
+}
+
+aside blockquote {
+    margin-top: 0px;
+    margin-left: 0px;
+    height: 30px;
+    padding: 10px;
+    border-left: 3px solid #ccc ;
+}
+
+aside  button.submit {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: blue;
+    color: white;
+    border:0px;
+}
+
+aside textarea {
+    vertical-align: text-top;
+}
+
+form label {
+    width: 120px;
+    text-align: right;
+    display: inline-block;
+}
+form div {
+    margin: 10px;
+}
+
+
+form p.tip {
+    font-size:0.8em;
+    color: #ccc;
+    margin-left: 130px;
+}
+
+
+footer {
+    background-color: black;
+    height: 50px;
+    color: white;
+    text-align: center;
+    padding-top:25px;
+}
+
+
+article header {
+    color: gray;
+    font-size: 0.8em;
+}
+
+article header h1 {
+    color: black;
+}
+
+article p {
+    text-indent: 2em;
+    line-height: 2em;
+}
+
+article .lists {
+    list-style-type: none;
+
+}
+
+
+.images div{
+    margin: 10px;
+    padding: 10px;
+    border:1px solid #ccc;
+    display: inline-block;
+}
+
+.images p {
+    text-indent: 0em;
+    margin:0 0 10px 0;
+    text-align: center;
+}
+
+
+.images img {
+    max-width: 100px;
+}
+
+
+article table {
+    width: 100%;
+    border:thin solid #ccc;
+    border-collapse: collapse;
+}
+
+article table td,th {
+   border:thin solid #ccc; 
+}
+
+article table thead {
+    background-color: black;
+    color: white;
+}
+
+
+article table tfoot {
+    background-color: #ccc;
+    color: black;
+}
+
+
