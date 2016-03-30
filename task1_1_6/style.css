@@ -214,6 +214,7 @@
 .main .right {
     float: right;
     width: 458px;
+    margin-bottom: 30px;
 }
 
 .main .left header {
@@ -316,7 +317,7 @@
     position: relative;
 }
 
-.main .right .bottom p {
+.main .right .bottom>p {
     font-family: "宋体";
     color: #5a5b5b;
     font-style: italic;
@@ -326,7 +327,7 @@
 }
 
 
-.main .right .bottom p span {
+.main .right .bottom>p span {
     font-size: 12px;
     text-align: right;
 }
@@ -341,44 +342,46 @@
 }
 
 .main .right .bottom .box_right {
-/*    position: absolute;
-    right: 0;
-    bottom: 0;*/
-    /*margin-left: 260px;*/
     float: right;
     height: 140px;
     width: 190px;
-    /*padding: 10px;*/
 }
 
 
-.main .right .bottom .box_left .zero {
+.main .right .bottom .box_left .pat {
+    height: 86px;
+    width: 240px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin-left: -120px;
+    margin-top: -43px;
+}
+
+.main .right .bottom .box_left .pat span {
     font: 110px "微软雅黑";
     color: #fff;
-    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 86px;
-    margin: 10px;
 }
 
-.main .right .bottom .box_left .ottff {
-    margin-left: 86px;
+.main .right .bottom .box_left .pat .ottff {
+    margin-left: 65px;
     border-left: 2px solid #fff;
-    padding-left: 10px;
-    margin-top: 40px;
-    height: 86px;
+    padding: 5px;
 }
 
-.main .right .bottom .box_left .ottff h1 {
-    font: italic 21px/24px "黑体";
+.main .right .bottom .box_left .pat .ottff .p1 {
+    font: italic 21px "黑体";
     color: #fff;
 }
 
-.main .right .bottom .box_left .ottff p {
+.main .right .bottom .box_left .pat .ottff .p2 {
     font: 12px "黑体";
-    margin: 6px 0;
     color: #fff;
 }
-
 
 
 .main .right .bottom .box_right p {
@@ -415,9 +418,9 @@
 }
 
 .footer {
-    margin-top: 50px;
     border-top: 1px solid #938e8c;
     width: 892px;
+    clear: both;
 }
 
 .footer .ife {
