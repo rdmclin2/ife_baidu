@@ -196,7 +196,7 @@
     opacity: 0.7;
 }
 
-.wwh .how .www span{
+.wwh .how .www span {
     color: #cd4a48;
     line-height: 16px;
     font-style: italic;
@@ -220,17 +220,18 @@
     padding-bottom: 10px;
     border-bottom: 2px solid;
 }
+
 .main .left header p {
     font-family: "黑体";
     font-weight: bold;
 }
 
-.main .left .tech1{
+.main .left .tech1 {
     font-size: 42px;
     color: #11456b;
 }
 
-.main .left .tech1 span{
+.main .left .tech1 span {
     font-size: 72px;
     color: #f5e327;
     font-style: italic;
@@ -248,7 +249,7 @@
     text-indent: 2em;
 }
 
-.main .left .first{
+.main .left .first {
     padding-top: 20px;
     text-indent: 0em;
 }
@@ -306,12 +307,122 @@
     line-height: 140%;
 }
 
-
 .main .right .bottom {
+    width: 419px;
+    height: 278px;
     margin-top: 20px;
-    background-color: 
+    padding: 20px;
+    background-color: #eeedd7;
+    position: relative;
 }
 
-.main .right .bottom ul {
-    list-style-type: none;
+.main .right .bottom p {
+    font-family: "宋体";
+    color: #5a5b5b;
+    font-style: italic;
+    font-size: 16px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+
+.main .right .bottom p span {
+    font-size: 12px;
+    text-align: right;
+}
+
+.main .right .bottom .box_left {
+    height: 160px;
+    width: 260px;
+    background-color: #d45d5c;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.main .right .bottom .box_right {
+/*    position: absolute;
+    right: 0;
+    bottom: 0;*/
+    /*margin-left: 260px;*/
+    float: right;
+    height: 140px;
+    width: 190px;
+    /*padding: 10px;*/
+}
+
+
+.main .right .bottom .box_left .zero {
+    font: 110px "微软雅黑";
+    color: #fff;
+    float: left;
+    height: 86px;
+    margin: 10px;
+}
+
+.main .right .bottom .box_left .ottff {
+    margin-left: 86px;
+    border-left: 2px solid #fff;
+    padding-left: 10px;
+    margin-top: 40px;
+    height: 86px;
+}
+
+.main .right .bottom .box_left .ottff h1 {
+    font: italic 21px/24px "黑体";
+    color: #fff;
+}
+
+.main .right .bottom .box_left .ottff p {
+    font: 12px "黑体";
+    margin: 6px 0;
+    color: #fff;
+}
+
+
+
+.main .right .bottom .box_right p {
+    font-size: 14px;
+    color: #5a5b5b;
+    font-family: "黑体";
+    font-style: italic;
+    position: relative;
+    margin-left: 20px;
+}
+
+.main .right .bottom .box_right span {
+    font-size: 72px;
+    color: #d45d5c;
+    font-family: "黑体";
+    /*display: block;*/
+    height: 10px;
+}
+
+.main .right .bottom .box_right span.sl {
+    float: left;
+    position: relative;
+    left: -50px;
+    top: -15px;
+    margin-right: -20px;
+}
+
+.main .right .bottom .box_right span.sr {
+    float: right;
+    position: absolute;
+    bottom: 10px;
+    right: -20px;
+    height: 10px;
+}
+
+.footer {
+    margin-top: 50px;
+    border-top: 1px solid #938e8c;
+    width: 892px;
+}
+
+.footer .ife {
+    float: right;
+    font-size: 12px;
+    font-family: "黑体";
+    color: #d45d5c;
 }
