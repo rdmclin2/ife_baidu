@@ -1,0 +1,23 @@
+
+section {
+    border: 1px solid blue;
+    margin: 0 0 10px 0;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+img { float: left; }
+
+p { margin 0; }
+
+
+footer { 
+    border: 1px solid red;
+}
+
