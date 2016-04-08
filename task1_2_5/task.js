@@ -56,19 +56,15 @@ var pageState = {
  */
 function renderChart() {
    var charWrap = document.getElementsByClassName("aqi-chart-wrap")[0];
-   // alert(charWrap);
-   // alert(charWrap);
    var appendString = "";
    var size = Object.keys(chartData).length;
    var spanWidth = Math.floor(charWrap.offsetWidth / size);
-   var height = charWrap.offsetHeight;
    for (var key in chartData) {
-      var rgb = "rgb("+Math.floor(Math.random()*256)
-                 +"," +Math.floor(Math.random() * 256) +"," 
-                      +Math.floor(Math.random() *256)+")";
+      var rgb = "rgb("+Math.floor(Math.random()*256) +"," 
+                      +Math.floor(Math.random()*256) +"," 
+                      +Math.floor(Math.random()*256) +")";
       appendString += "<div style='width:"+spanWidth+"px;height:"+chartData[key]+"px;background-color:"+rgb+";margin-top:"+(500-chartData[key])+"px;' title='"+key+" "+chartData[key]+"'></div>";
    }
-   // alert(appendString);
    charWrap.innerHTML = appendString;
 }
 
@@ -111,7 +107,7 @@ function citySelectChange(e) {
 function initGraTimeForm() {
   var inputs = document.getElementById("form-gra-time").getElementsByTagName("input");
   for (var i = 0; i < inputs.length; i++) {
-    inputs[i].onclick = graTimeChange;
+    inputs[i].onchange = graTimeChange;
   }
 }
 
@@ -146,9 +142,6 @@ function initAqiChartData() {
 
    switch(nowGraTime){
     case "day":
-      // for (var day in cityData){
-      //   chartData[day,cityData[day]});
-      // }
       chartData = cityData;
       break;
     case "week":
@@ -175,9 +168,7 @@ function initAqiChartData() {
         }
         break;
    }
-   // alert(JSON.stringify(chartData));
    renderChart();
-
 }
 
 /**

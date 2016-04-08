@@ -1,0 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑";
+}
+
+.container {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.nums {
+    height: 50px;
+}
+
+.cube {
+    width: 50px;
+    height: 50;
+    display: inline-block;
+    background-color: red;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    margin : 5px;
+}
