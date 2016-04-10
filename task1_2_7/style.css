@@ -1,0 +1,22 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑";
+}
+
+.container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.nums {
+    margin-top: 20px;
+    height: 200px;
+}
+
+.cube {
+    display: inline-block;
+    background-color: red;
+    color: white;
+    margin-right: 2px;
+}
