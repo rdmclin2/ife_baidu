@@ -236,6 +236,10 @@ boxBot.prototype.turn = function(direction){
     this.rotate();
 }
 
+function $(querySelector){
+    return document.querySelector(querySelector);
+}
+
 /**
  * [init_buttons description]
  * @param  {[type]} bot [description]
@@ -264,36 +268,20 @@ function init_buttons(bot) {
         }
     }
 
-    var btnGo = document.getElementById('btn-go');
-    var btnLeft = document.getElementById('btn-left');
-    var btnRight = document.getElementById('btn-right');
-    var btnBack = document.getElementById('btn-bak');
+    $('#btn-go').onclick = function() { bot.go(); }
+    $('#btn-left').onclick = function() { bot.turnLeft(); }
+    $('#btn-right').onclick = function() { bot.turnRight(); }
+    $('#btn-bak').onclick = function() { bot.turnBack(); }
 
-    btnGo.onclick = function() { bot.go(); }
-    btnLeft.onclick = function() { bot.turnLeft(); }
-    btnRight.onclick = function() { bot.turnRight(); }
-    btnBack.onclick = function() { bot.turnBack(); }
+    $('#btn-traleft').onclick = function() { bot.traLeft(); }
+    $('#btn-tratop').onclick = function() { bot.traTop(); }
+    $('#btn-trarig').onclick = function() { bot.traRight(); }
+    $('#btn-trabot').onclick = function() { bot.traBottom(); }
 
-
-    var btnTraLeft = document.getElementById('btn-traleft');
-    var btnTraTop = document.getElementById('btn-tratop');
-    var btnTraRight = document.getElementById('btn-trarig');
-    var btnTraBottom = document.getElementById('btn-trabot');
-
-    btnTraLeft.onclick = function() { bot.traLeft(); }
-    btnTraTop.onclick = function() { bot.traTop(); }
-    btnTraRight.onclick = function() { bot.traRight(); }
-    btnTraBottom.onclick = function() { bot.traBottom(); }
-
-    var btnMoveLeft = document.getElementById('btn-movleft');
-    var btnMoveTop = document.getElementById('btn-movtop');
-    var btnMoveRight = document.getElementById('btn-movrig');
-    var btnMoveBottom = document.getElementById('btn-movbot');
-
-    btnMoveLeft.onclick = function() { bot.movLeft(); }
-    btnMoveTop.onclick = function() { bot.movTop(); }
-    btnMoveRight.onclick = function() { bot.movRight(); }
-    btnMoveBottom.onclick = function() { bot.movBottom(); }
+    $('#btn-movleft').onclick = function() { bot.movLeft(); }
+    $('#btn-movtop').onclick = function() { bot.movTop(); }
+    $('#btn-movrig').onclick = function() { bot.movRight(); }
+    $('#btn-movbot').onclick = function() { bot.movBottom(); }
 
 }
 
