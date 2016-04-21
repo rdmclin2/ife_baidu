@@ -1,0 +1,92 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "微软雅黑";
+}
+
+#wrapper {
+     margin: 20px;
+}
+
+section#box-area {
+    width: 600px;
+    float: left;
+}
+
+section#box-area .inner {
+    border: thin solid #ccc;
+    position: relative;
+}
+
+section#commands-area {
+    width: 600px;
+    float: left;
+}
+
+section#commands-area .inner{
+    border: thin solid #ccc;  
+    margin: 0 20px;
+}
+
+table {
+    /*margin: 0 auto; */
+    border-collapse: collapse;
+    position: relative;
+}
+
+td.box {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+td.box[data-type="y-axis"],
+td.box[data-type="x-axis"] {
+    border: 0;
+}
+
+#bot {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    position: absolute;
+    transition-property: left top ;
+    transition-duration: .25s;
+}
+
+#bot .bot-up {
+    height: 15px;
+    background-color: blue;
+}
+
+
+#editor {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    margin-top: 20px;
+}
+
+#editor .sider {
+    height: 400px;
+    width: 20px;
+    float: left;
+    background-color: #ccc;
+    color: white;
+    text-align: center;
+}
+
+#editor textarea {
+    width: 380px;
+    height: 400px;
+    float: left;
+    background-color: black;
+    color: white;
+}
+
+
