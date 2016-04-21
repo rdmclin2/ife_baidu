@@ -247,14 +247,20 @@ function init_buttons(bot) {
     btnExe.onclick = function() {
         var value = inputCommand.value.trim();
         if (!value) return;
-        if (value === "TUN LEFT") {
-            bot.turnLeft();
-        } else if (value === "TUN RIG") {
-            bot.turnRight();
-        } else if (value === "TUN BAC") {
-            bot.turnBack();
-        } else if (value === "GO") {
-            bot.go();
+        switch(value){
+            case "TUN LEF" : bot.turnLeft();break;
+            case "TUN RIG" : bot.turnRight();break;
+            case "TUN BAC" : bot.turnBack();break;
+            case "GO"      : bot.go();break;
+            case "TRA LEF" : bot.traLeft();break;
+            case "TRA TOP" : bot.traTop();break;
+            case "TRA RIG" : bot.traRight();break;
+            case "TRA BOT" : bot.traBottom();break;
+            case "MOV LEF" : bot.movLeft();break;
+            case "MOV TOP" : bot.movTop();break;
+            case "MOV RIG" : bot.movRight();break;
+            case "MOV BOT" : bot.movBottom();break;
+
         }
     }
 
