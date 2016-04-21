@@ -1,0 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "微软雅黑";
+}
+
+/*.container {
+    width: 600px;
+    margin: 0 auto;
+}*/
+
+.action {
+    margin-left: 40px;
+}
+
+table {
+    /*margin: 0 auto; */
+    border-collapse: collapse;
+    position: relative;
+}
+
+td.box {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+td.box[data-type="y-axis"],
+td.box[data-type="x-axis"] {
+    border: 0;
+}
+
+#bot {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    position: absolute;
+    transition-property: left top ;
+    transition-duration: .25s;
+}
+
+#bot .bot-up {
+    height: 15px;
+    background-color: blue;
+}
+
+
