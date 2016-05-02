@@ -4,12 +4,6 @@
 }
 
 #container {
-    width: 300px;
+    width: 900px;
     margin: 0 auto;
-}
-
-#game {
-    width: 300px;
-    margin : 0 auto;
-    border: 1px solid black;
 }

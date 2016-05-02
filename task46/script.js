@@ -1,163 +1,260 @@
-var canvas = document.getElementById("game");
+/**
+ *  面板的常量定义
+ */
+const block_length = 30;
+const block_width = 16;
+const block_height = 20;
 
-var ctx = canvas.getContext("2d");
+// 生成墙壁的可能性
+const probobility = 0.2;
 
-ctx.fillStyle = '#fee6ce';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-var keysDown = {};
-var blocks = [];
+// 定义方块类型
+const BLOCK_WALL = 1;
+const BLOCK_AGENT = 2;
+const BLOCK_OBSTACLE = 3;
+const BLOCK_FILE = 4;
 
-var agent = {
-    x: canvas.width / 2,
-    y: 20,
-    speed: 256,
-    radius: 15,
-    color: '#49b626',
-    draw: function() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-        ctx.closePath();
-        ctx.fillStyle = this.color;
-        ctx.fill();
-    }
-};
+/**
+ *  变量定义
+ */
+let keysDown = {};
+let obstacles = [];
+let agent;
+let file;
+let finder = new AStarFinder();
 
-var file = {
-    line: 30,
-    x: canvas.width / 2 - 15,
-    y: canvas.height - 30,
-    color: '#f2ae3b',
-    draw: function() {
-        // 填充三角形
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x + this.line, this.y);
-        ctx.lineTo(this.x + this.line / 2, this.y + this.line / 2 * 1.7);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-    }
+/**
+ * 创建canvas
+ */
+let canvas = document.createElement("canvas");
+canvas.width = block_width * block_length;
+canvas.height = block_height * block_length;
+document.getElementById("container").appendChild(canvas);
+
+/**
+ * 获取背景
+ */
+let ctx = canvas.getContext("2d");
+
+
+let boards = new Array(block_height);
+for (let i = 0; i < block_height; i++) {
+    boards[i] = new Array(block_width);
 }
 
-var block = function() {
-    this.x = 0;
-    this.y = 0;
-    this.height = 20;
-    this.width = 20;
+/**
+ * agent对象定义
+ * @param x
+ * @param y
+ */
+let Agent = function (i, j) {
+    this.x = i * block_length + block_length / 2;
+    this.y = j * block_length + block_length / 2;
+    this.speed = 256;
+    this.radius = (block_length - 4) / 2;
+    this.color = '#49b626';
+};
+
+Agent.prototype.draw = function () {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+}
+
+/**
+ * file对象定义
+ * @param x
+ * @param y
+ */
+let File = function (i, j) {
+    this.x = i * block_length;
+    this.y = j * block_length;
+    this.color = '#f2ae3b';
+};
+
+File.prototype.draw = function () {
+    // 填充三角形
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(this.x + block_length, this.y);
+    ctx.lineTo(this.x + block_length / 2, this.y + block_length / 2 * 1.7);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+};
+
+let Block = function (i, j) {
+    this.x = i * block_length;
+    this.y = j * block_length;
+    this.color = '#fee6ce';
+}
+
+Block.prototype.draw = function () {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, block_length, block_length);
+}
+
+let Obstacle = function (i, j) {
+    this.x = i * block_length;
+    this.y = j * block_length;
     this.color = '#2e1e1e';
 }
 
-block.prototype.draw = function() {
+Obstacle.prototype.draw = function () {
     ctx.fillStyle = this.color;
-    // console.log(this.x);
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillRect(this.x, this.y, block_length, block_length);
 }
 
-var reset = function() {
-    agent.x = canvas.width / 2;
-    agent.y = 20;
+let Wall = function (i, j) {
+    this.x = i * block_length;
+    this.y = j * block_length;
+    this.color = '#3e4958';
+}
 
-    blocks = [];
-    var blockCount = 1 + Math.floor(Math.random() * 5);
+Wall.prototype.draw = function () {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, block_length, block_length);
+}
 
-    for (var i = 0; i < blockCount; i++) {
-        var blockInstance = new block();
-        var flag = true;
-        while (flag) {
-            blockInstance.width = 50 + Math.floor(Math.random() * 50);
-            blockInstance.height = 50 + Math.floor(Math.random() * 50);
-            blockInstance.x = Math.random() * canvas.width;
-            blockInstance.y = Math.random() * canvas.width;
+/**
+ * 初始化面板
+ * @type {Array}
+ */
+let init_canvas = function () {
+    obstacles = [];
+    //最底层 铺地和墙
+    for (let i = 0; i < block_width; i++) {
+        for (let j = 0; j < block_height; j++) {
 
-            // 文件碰撞检测
-            if (blockInstance.x <= (file.x + file.line) && (blockInstance.x + blockInstance.width) >= file.x && blockInstance.y <= (file.y + file.line / 2 * 1.7) && (blockInstance.y + blockInstance.width) >= file.y) {
-                continue;
+            if (i == 0 || j == 0 || i == (block_width - 1) || j == (block_height - 1)) {
+                boards[j][i] = new Wall(i, j);
+            } else {
+                boards[j][i] = new Block(i, j);
+
             }
-            // 特工碰撞检测
-            if ((agent.x - agent.radius) <= (blockInstance.x + blockInstance.width) && (agent.x + agent.radius) >= blockInstance.x && (agent.y - agent.radius) <= (blockInstance.y + blockInstance.height) && (agent.y + agent.radius) >= blockInstance.y) {
-                continue;
+        }
+    }
+
+    //第二层 铺障碍
+    for (let i = 1; i < block_width - 1; i++) {
+        for (let j = 1; j < block_height - 1; j++) {
+            if (i == block_width / 2 && j == 1)continue;
+            if (i == block_width / 2 && j == block_height - 2) continue;
+            if (Math.random() < probobility) {
+                boards[j][i] = new Obstacle(i, j);
+                obstacles.push(boards[j][i]);
             }
-            flag = false;
         }
-
-        blocks.push(blockInstance);
     }
+
+    //特工,和文件
+    agent = new Agent(block_width / 2, 1);
+    file = new File(block_width / 2, block_height - 2);
 
 }
 
-var update = function(modifier) {
-    var length = agent.speed * modifier;
-    var oldx = agent.x;
-    var oldy = agent.y;
+//let update = function (modifier) {
+//    let width = agent.speed * modifier;
+//    let oldx = agent.x;
+//    let oldy = agent.y;
+//
+//    //墙壁碰撞检测
+//    if (38 in keysDown) { // 用户按的是↑
+//        if (agent.y - width > agent.radius + block_length) {
+//            agent.y -= width;
+//        }
+//    }
+//    if (40 in keysDown) { // 用户按的是↓
+//        if (agent.y + width < canvas.height - agent.radius - block_length) {
+//            agent.y += width;
+//        }
+//    }
+//    if (37 in keysDown) { // 用户按的是←
+//        if (agent.x - width > agent.radius + block_length) {
+//            agent.x -= width;
+//        }
+//    }
+//    if (39 in keysDown) { // 用户按的是→
+//        if (agent.x + width < canvas.width - agent.radius - block_length) {
+//            agent.x += width;
+//        }
+//    }
+//
+//    //alert(obstacles.length);
+//    // 墙壁碰撞检测
+//    for (let i = obstacles.length - 1; i >= 0; i--) {
+//        if ((agent.x - agent.radius) < (obstacles[i].x + block_length) && (agent.x + agent.radius) > obstacles[i].x && (agent.y - agent.radius) < (obstacles[i].y + block_length) && (agent.y + agent.radius) > obstacles[i].y) {
+//            agent.x = oldx;
+//            agent.y = oldy;
+//        }
+//    }
+//
+//    // 是否拿到文件
+//    if ((agent.x - agent.radius) <= (file.x + block_length) && (agent.x + agent.radius) >= file.x && (agent.y - agent.radius) <= (file.y + block_length / 2 * 1.7) && (agent.y + agent.radius) >= file.y) {
+//        init_canvas();
+//    }
+//}
 
-    //边框碰撞检测
-    if (38 in keysDown) { // 用户按的是↑
-        if (agent.y - length > agent.radius) {
-            agent.y -= length;
+//addEventListener("keydown", function (e) {
+//    keysDown[e.keyCode] = true;
+//}, false);
+//
+//addEventListener("keyup", function (e) {
+//    delete keysDown[e.keyCode];
+//}, false);
+
+
+canvas.addEventListener("click",function(event){
+    let e = event;
+    let startX = Math.floor(agent.x /block_length);
+    let startY= Math.floor(agent.y /block_length);
+
+    let endX = Math.floor((e.clientX - canvas.offsetLeft)/ block_length);
+    let endY= Math.floor((e.clientY - canvas.offsetTop)/block_length);
+
+    let grid = new Grid(block_width,block_height);
+    for (let i = 0; i < block_height; i++) {
+        for (let j = 0; j < block_width; j++) {
+            if(boards[i][j] instanceof Wall || boards[i][j] instanceof Obstacle){
+                let x = boards[i][j].x / block_length;
+                let y = boards[i][j].y / block_length;
+                grid.setWalkableAt(x, y, false);
+            }
         }
     }
-    if (40 in keysDown) { // 用户按的是↓
-        if (agent.y + length < canvas.height - agent.radius) {
-            agent.y += length;
-        }
-    }
-    if (37 in keysDown) { // 用户按的是←
-        if (agent.x - length > agent.radius) {
-            agent.x -= length;
-        }
-    }
-    if (39 in keysDown) { // 用户按的是→
-        if (agent.x + length < canvas.width - agent.radius) {
-            agent.x += length;
-        }
-    }
-
-    // 墙壁碰撞检测
-    for (var i = blocks.length - 1; i >= 0; i--) {
-        if ((agent.x - agent.radius) <= (blocks[i].x + blocks[i].width) && (agent.x + agent.radius) >= blocks[i].x && (agent.y - agent.radius) <= (blocks[i].y + blocks[i].height) && (agent.y + agent.radius) >= blocks[i].y) {
-            agent.x = oldx;
-            agent.y = oldy;
-        }
-    }
-
-    // 是否拿到文件
-    if ((agent.x - agent.radius) <= (file.x + file.line) && (agent.x + agent.radius) >= file.x && (agent.y - agent.radius) <= (file.y + file.line / 2 * 1.7) && (agent.y + agent.radius) >= file.y) {
-        reset();
-    }
-
-
-}
-
-addEventListener("keydown", function(e) {
-    keysDown[e.keyCode] = true;
-}, false);
-
-addEventListener("keyup", function(e) {
-    delete keysDown[e.keyCode];
-}, false);
+    let path = finder.findPath(startX, startY, endX, endY, grid);
+    console.log(JSON.stringify(path));
+    main(path);
+});
 
 function draw() {
-    ctx.fillStyle = '#fee6ce';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    for (let i = 0; i < block_height; i++) {
+        for (let j = 0; j < block_width; j++) {
+            boards[i][j].draw();
+        }
+    }
     agent.draw();
     file.draw();
-
-    for (var b of blocks) {
-        b.draw();
-    }
 }
 
-function main() {
-    var now = Date.now();
-    var delta = now - then;
+function main(path) {
 
-    update(delta / 1000);
-    draw();
-    then = now;
-    requestAnimationFrame(main);
+   for(let i = 0 ; i < path.length; i++){
+       (function(time){
+           window.setTimeout(function () {
+               agent.x = path[time][0] * block_length + block_length / 2;;
+               agent.y = path[time][1] * block_length + block_length / 2;;
+               requestAnimationFrame(draw);
+               if(path[time][0] === file.x/block_length &&
+                   path[time][1] === file.y/block_length){
+                   init_canvas();
+               }
+           }, 1000/20 * time);
+       })(i);
+   }
 }
 
 // 少年，开始游戏吧！
-var then = Date.now();
-reset();
-main();
+init_canvas();
+draw();
