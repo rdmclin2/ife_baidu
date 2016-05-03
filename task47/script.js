@@ -36,6 +36,7 @@ canvas.addEventListener("click", function (event) {
   let endY = Math.floor((e.clientY - canvas.offsetTop) / block_length);
 
   path = findPath(startX, startY, endX, endY);
+  console.log(JSON.stringify(path));
 
 });
 
@@ -61,11 +62,15 @@ function update(modifier){
   //寻路
   if(path.length !== 0) {
     let dest = path[0];
+    //console.log("before : " + agent.x + " " + agent.y);
 
     if(Math.floor(agent.posX / block_length) === dest[0] &&
       Math.floor(agent.posY / block_length) === dest[1]) {
       agent.x = dest[0];
       agent.y = dest[1];
+      //强制一致
+      agent.posX = agent.x * block_length;
+      agent.posY = agent.y * block_length;
 
       if(dest[0] === file.x && dest[1] === file.y) {
         init_canvas();
@@ -76,6 +81,13 @@ function update(modifier){
       var dirY = dest[1] - agent.y;
       agent.posX += dirX * modifier * agent.speed;
       agent.posY += dirY * modifier * agent.speed;
+    }
+    //console.log("after: "  + agent.x + " " + agent.y);
+  }
+
+  for(let guard of guards){
+    if(guard.detectAgent()){
+      guard.shoot();
     }
   }
 

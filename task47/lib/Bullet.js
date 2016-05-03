@@ -7,6 +7,7 @@
 let Bullet = function (i, j,color) {
   this.x = i ;
   this.y = j ;
+  this.speed = 256;
   this.radius = 4;
   this.color = color;
 };

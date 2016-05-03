@@ -6,7 +6,9 @@
 let Guard= function (i, j) {
   this.x = i ;
   this.y = j ;
-  this.radiusInner = (block_length - 4) / 2;
+  this.posX = this.x * block_length;
+  this.posY = this.y* block_length;
+  this.radiusInner = (block_length) / 2;
   this.radiusOut = block_length * 2;
   this.colorInner = '#f3634f';
   this.colorOut= "rgba(231, 192, 174, 0.5)";
@@ -14,12 +16,9 @@ let Guard= function (i, j) {
 };
 
 Guard.prototype.draw = function () {
-  var posX = this.x * block_length + block_length / 2;
-  var posY = this.y* block_length + block_length / 2;
-
   //画外圆
   ctx.beginPath();
-  ctx.arc(posX,posY, this.radiusOut, 0, Math.PI * 2, true);
+  ctx.arc(this.posX+this.radiusInner,this.posY+this.radiusInner, this.radiusOut, 0, Math.PI * 2, true);
   ctx.closePath();
   ctx.fillStyle = this.colorOut;
   ctx.fill();
@@ -30,7 +29,7 @@ Guard.prototype.draw = function () {
 
   //画内圆
   ctx.beginPath();
-  ctx.arc(posX,posY, this.radiusInner, 0, Math.PI * 2, true);
+  ctx.arc(this.posX + this.radiusInner,this.posY+ this.radiusInner, this.radiusInner, 0, Math.PI * 2, true);
   ctx.closePath();
   ctx.fillStyle = this.colorInner;
   ctx.fill();
@@ -41,9 +40,9 @@ Guard.prototype.shoot = function(){
 }
 
 Guard.prototype.detectAgent= function(){
-  let distance = euclidean((agent.x - this.x), (agent.y - this.y));
+  let distance = euclidean((agent.posX - this.posX), (agent.posY - this.posY));
   let sumRadius = agent.radius + this.radiusOut;
   if(distance < sumRadius) {
-    alert("检测到Agent");
+    console.log("检测到Agent");
   }
 }
