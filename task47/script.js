@@ -99,7 +99,12 @@ function update(modifier){
     bullet.posY = bullet.posY + modifier* bullet.speed * bullet.dirY;
 
     //判断有没有撞墙
-
+    var endX = Math.floor((bullet.posX - canvasGame.offsetLeft) / block_length);
+    var endY = Math.floor((bullet.posY - canvasGame.offsetTop) / block_length);
+    if(boards[endY][endX] instanceof Wall || boards[endY][endX] instanceof Obstacle){
+      bullets.splice(bullets.indexOf(bullet),1);
+      continue;
+    }
 
     if(bullet.shooter instanceof Guard){
       //判断有没有子弹打中特工

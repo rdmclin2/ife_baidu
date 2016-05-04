@@ -6,12 +6,14 @@
 var File = function (i, j) {
   this.x = i ;
   this.y = j ;
+  this.posX = this.x * block_length;
+  this.posY =this.y * block_length;
   this.color = '#f2ae3b';
 };
 
 File.prototype.draw = function () {
-  var posX = this.x * block_length;
-  var posY = this.y * block_length;
+  var posX = this.posX;
+  var posY = this.posY;
   // 填充三角形
   ctx.beginPath();
   ctx.moveTo(posX, posY);
