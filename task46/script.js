@@ -1,31 +1,32 @@
 /**
  *  面板的常量定义
  */
-const block_length = 30;
-const block_width = 16;
-const block_height = 20;
+var block_length = 30;
+var block_width = 16;
+var block_height = 20;
 
 // 生成墙壁的可能性
-const probobility = 0.2;
+var probobility = 0.2;
 
 // 定义方块类型
-const BLOCK_WALL = 1;
-const BLOCK_AGENT = 2;
-const BLOCK_OBSTACLE = 3;
-const BLOCK_FILE = 4;
+var BLOCK_WALL = 1;
+var BLOCK_AGENT = 2;
+var BLOCK_OBSTACLE = 3;
+var BLOCK_FILE = 4;
 
 /**
  *  变量定义
  */
-let obstacles = [];
-let agent;
-let file;
-let finder = new AStarFinder();
+var keysDown = {};
+var obstacles = [];
+var agent;
+var file;
+var finder = new AStarFinder();
 
 /**
  * 创建canvas
  */
-let canvas = document.createElement("canvas");
+var canvas = document.createElement("canvas");
 canvas.width = block_width * block_length;
 canvas.height = block_height * block_length;
 document.getElementById("container").appendChild(canvas);
@@ -33,11 +34,11 @@ document.getElementById("container").appendChild(canvas);
 /**
  * 获取背景
  */
-let ctx = canvas.getContext("2d");
+var ctx = canvas.getContext("2d");
 
 
-let boards = new Array(block_height);
-for (let i = 0; i < block_height; i++) {
+var boards = new Array(block_height);
+for (var i = 0; i < block_height; i++) {
     boards[i] = new Array(block_width);
 }
 
@@ -46,7 +47,7 @@ for (let i = 0; i < block_height; i++) {
  * @param x
  * @param y
  */
-let Agent = function (i, j) {
+var Agent = function (i, j) {
     this.x = i ;
     this.y = j ;
     this.radius = (block_length - 4) / 2;
@@ -68,7 +69,7 @@ Agent.prototype.draw = function () {
  * @param x
  * @param y
  */
-let File = function (i, j) {
+var File = function (i, j) {
     this.x = i ;
     this.y = j ;
     this.color = '#f2ae3b';
@@ -86,7 +87,7 @@ File.prototype.draw = function () {
     ctx.fill();
 };
 
-let Block = function (i, j) {
+var Block = function (i, j) {
     this.x = i ;
     this.y = j ;
     this.color = '#fee6ce';
@@ -97,7 +98,7 @@ Block.prototype.draw = function () {
     ctx.fillRect(this.x* block_length, this.y* block_length, block_length, block_length);
 }
 
-let Obstacle = function (i, j) {
+var Obstacle = function (i, j) {
     this.x = i ;
     this.y = j ;
     this.color = '#2e1e1e';
@@ -108,7 +109,7 @@ Obstacle.prototype.draw = function () {
     ctx.fillRect(this.x* block_length, this.y* block_length, block_length, block_length);
 }
 
-let Wall = function (i, j) {
+var Wall = function (i, j) {
     this.x = i ;
     this.y = j ;
     this.color = '#3e4958';
@@ -123,11 +124,11 @@ Wall.prototype.draw = function () {
  * 初始化面板
  * @type {Array}
  */
-let init_canvas = function () {
+var init_canvas = function () {
     obstacles = [];
     //最底层 铺地和墙
-    for (let i = 0; i < block_width; i++) {
-        for (let j = 0; j < block_height; j++) {
+    for (var i = 0; i < block_width; i++) {
+        for (var j = 0; j < block_height; j++) {
 
             if (i == 0 || j == 0 || i == (block_width - 1) || j == (block_height - 1)) {
                 boards[j][i] = new Wall(i, j);
@@ -139,8 +140,8 @@ let init_canvas = function () {
     }
 
     //第二层 铺障碍
-    for (let i = 1; i < block_width - 1; i++) {
-        for (let j = 1; j < block_height - 1; j++) {
+    for (var i = 1; i < block_width - 1; i++) {
+        for (var j = 1; j < block_height - 1; j++) {
             if (i == block_width / 2 && j == 1)continue;
             if (i == block_width / 2 && j == block_height - 2) continue;
             if (Math.random() < probobility) {
@@ -150,13 +151,13 @@ let init_canvas = function () {
         }
     }
 
-    let startX = block_width / 2;
-    let startY= 1;
+    var startX = block_width / 2;
+    var startY= 1;
 
-    let endX = block_width / 2;
-    let endY= block_height - 2;
+    var endX = block_width / 2;
+    var endY= block_height - 2;
 
-    let path = findPath(startX,startY,endX,endY);
+    var path = findPath(startX,startY,endX,endY);
     if(path.length === 0 ){
         init_canvas();
         return [];
@@ -169,35 +170,35 @@ let init_canvas = function () {
 }
 
 function findPath(startX,startY,endX,endY){
-    let grid = new Grid(block_width,block_height);
+    var grid = new Grid(block_width,block_height);
 
-    for (let i = 0; i < block_height; i++) {
-        for (let j = 0; j < block_width; j++) {
+    for (var i = 0; i < block_height; i++) {
+        for (var j = 0; j < block_width; j++) {
             if(boards[i][j] instanceof Wall || boards[i][j] instanceof Obstacle){
                 grid.setWalkableAt(boards[i][j].x, boards[i][j].y, false);
             }
         }
     }
-    let path = finder.findPath(startX, startY, endX, endY, grid);
+    var path = finder.findPath(startX, startY, endX, endY, grid);
     return path;
 }
 
 canvas.addEventListener("click",function(event){
-    let e = event;
-    let startX = agent.x;
-    let startY= agent.y;
+    var e = event;
+    var startX = agent.x;
+    var startY= agent.y;
 
-    let endX = Math.floor((e.clientX - canvas.offsetLeft)/ block_length);
-    let endY= Math.floor((e.clientY - canvas.offsetTop)/block_length);
+    var endX = Math.floor((e.clientX - canvas.offsetLeft)/ block_length);
+    var endY= Math.floor((e.clientY - canvas.offsetTop)/block_length);
 
-    let path = findPath(startX,startY,endX,endY);
+    var path = findPath(startX,startY,endX,endY);
 
     main(path);
 });
 
 function draw() {
-    for (let i = 0; i < block_height; i++) {
-        for (let j = 0; j < block_width; j++) {
+    for (var i = 0; i < block_height; i++) {
+        for (var j = 0; j < block_width; j++) {
             boards[i][j].draw();
         }
     }
@@ -206,7 +207,7 @@ function draw() {
 }
 
 function main(path) {
-   for(let i = 0 ; i < path.length; i++){
+   for(var i = 0 ; i < path.length; i++){
        (function(time){
            window.setTimeout(function () {
                agent.x = path[time][0];

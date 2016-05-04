@@ -3,7 +3,7 @@
  * @param x
  * @param y
  */
-let Agent = function (i, j) {
+var Agent = function (i, j) {
   this.x = i; // 初始位置x
   this.y = j; // 初始位置y
   this.radius = (block_length ) / 2;
@@ -28,8 +28,8 @@ Agent.prototype.draw = function () {
 
 Agent.prototype.shoot = function (guard) {
   //子弹射击有间隔时间
-  let now = Date.now();
-  let delta = now - this.gunFireTime;
+  var now = Date.now();
+  var delta = now - this.gunFireTime;
   if (delta < this.gunDelay) {
     return;
   }
@@ -39,31 +39,31 @@ Agent.prototype.shoot = function (guard) {
     return;
   }
 
-  let distance = euclidean((guard.posX - this.posX), (guard.posY - this.posY));
-  let dirX = (guard.posX - this.posX) / distance;
-  let dirY = (guard.posY - this.posY) / distance;
-  let bullet = new Bullet(this.posX, this.posY, this.colorBullet, dirX, dirY, this);
+  var distance = euclidean((guard.posX - this.posX), (guard.posY - this.posY));
+  var dirX = (guard.posX - this.posX) / distance;
+  var dirY = (guard.posY - this.posY) / distance;
+  var bullet = new Bullet(this.posX, this.posY, this.colorBullet, dirX, dirY, this);
   bullets.push(bullet);
   this.gunFireTime = Date.now();
 }
 
 Agent.prototype.detectObstacle = function (guard) {
-  let distance = euclidean((guard.posX - this.posX), (guard.posY - this.posY));
-  let dirX = (guard.posX - this.posX) / distance;
-  let dirY = (guard.posY - this.posY) / distance;
-  let i = this.posX;
-  let j = this.posY;
+  var distance = euclidean((guard.posX - this.posX), (guard.posY - this.posY));
+  var dirX = (guard.posX - this.posX) / distance;
+  var dirY = (guard.posY - this.posY) / distance;
+  var i = this.posX;
+  var j = this.posY;
   console.log(dirX, dirY);
 
   while (true) {
-    let disLine = euclidean((i - this.posX), (j - this.posY));
+    var disLine = euclidean((i - this.posX), (j - this.posY));
     if (disLine > distance) {
       break;
     }
     i += dirX;
     j += dirY;
-    let endX = Math.floor((i - canvasGame.offsetLeft) / block_length);
-    let endY = Math.floor((j - canvasGame.offsetTop) / block_length);
+    var endX = Math.floor((i - canvasGame.offsetLeft) / block_length);
+    var endY = Math.floor((j - canvasGame.offsetTop) / block_length);
     if (boards[endY][endX] instanceof Obstacle) {
       return true;
     }

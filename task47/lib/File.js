@@ -3,7 +3,7 @@
  * @param x
  * @param y
  */
-let File = function (i, j) {
+var File = function (i, j) {
   this.x = i ;
   this.y = j ;
   this.color = '#f2ae3b';

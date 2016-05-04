@@ -3,7 +3,7 @@
  * @param i
  * @param j
  */
-let Block = function (i, j) {
+var Block = function (i, j) {
   this.x = i ;
   this.y = j ;
   this.color = '#fee6ce';

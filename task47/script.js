@@ -1,10 +1,10 @@
 
 
 function findPath(startX, startY, endX, endY) {
-  let grid = new Grid(block_width, block_height);
+  var grid = new Grid(block_width, block_height);
 
-  for (let i = 0; i < block_height; i++) {
-    for (let j = 0; j < block_width; j++) {
+  for (var i = 0; i < block_height; i++) {
+    for (var j = 0; j < block_width; j++) {
       if (boards[i][j] instanceof Wall || boards[i][j] instanceof Obstacle) {
         grid.setWalkableAt(boards[i][j].x, boards[i][j].y, false);
       }
@@ -18,14 +18,14 @@ canvasGame.addEventListener("click", function (event) {
     console.log("正在寻路中");
     return ;
   }
-  let e = event;
-  let startX = agent.x;
-  let startY = agent.y;
+  var e = event;
+  var startX = agent.x;
+  var startY = agent.y;
 
-  let endX = Math.floor((e.clientX - canvasGame.offsetLeft) / block_length);
-  let endY = Math.floor((e.clientY - canvasGame.offsetTop) / block_length);
+  var endX = Math.floor((e.clientX - canvasGame.offsetLeft) / block_length);
+  var endY = Math.floor((e.clientY - canvasGame.offsetTop) / block_length);
 
-  for(let guard of guards){
+  for(var guard of guards){
     if(guard.x === endX && guard.y === endY){
       agent.shoot(guard);
       return ;
@@ -40,19 +40,19 @@ canvasGame.addEventListener("click", function (event) {
 function draw() {
 
 
-  for (let i = 0; i < block_height; i++) {
-    for (let j = 0; j < block_width; j++) {
+  for (var i = 0; i < block_height; i++) {
+    for (var j = 0; j < block_width; j++) {
       boards[i][j].draw();
     }
   }
 
 
-  for(let guard of guards){
+  for(var guard of guards){
     guard.draw();
     guard.lineToAgent();
   }
 
-  for(let bullet of bullets){
+  for(var bullet of bullets){
     bullet.draw();
   }
 
@@ -63,7 +63,7 @@ function draw() {
 function update(modifier){
   //寻路
   if(pathes.length !== 0) {
-    let dest = pathes[0];
+    var dest = pathes[0];
     //console.log("before : " + agent.x + " " + agent.y);
 
     if(Math.floor((agent.posX-agent.radius) / block_length) === dest[0] &&
@@ -88,13 +88,13 @@ function update(modifier){
   }
 
   //守卫检测特工,发射子弹
-  for(let guard of guards){
+  for(var guard of guards){
     if(guard.detectAgent() ){
       guard.shoot();
     }
   }
   //让子弹飞
-  for(let bullet of bullets){
+  for(var bullet of bullets){
     bullet.posX = bullet.posX + modifier* bullet.speed * bullet.dirX;
     bullet.posY = bullet.posY + modifier* bullet.speed * bullet.dirY;
 
@@ -103,17 +103,17 @@ function update(modifier){
 
     if(bullet.shooter instanceof Guard){
       //判断有没有子弹打中特工
-      let distance = euclidean((agent.posX - bullet.posX), (agent.posY - bullet.posY));
-      let sumRadius = agent.radius - bullet.radius;
+      var distance = euclidean((agent.posX - bullet.posX), (agent.posY - bullet.posY));
+      var sumRadius = agent.radius - bullet.radius;
       if(distance < sumRadius) {//打中
         alert("you are dead");
         init_canvas()
       }
     }else if(bullet.shooter instanceof Agent){
       //判断有没有子弹打中守卫
-      for(let guard of guards){
-        let distance = euclidean((guard.posX - bullet.posX), (guard.posY - bullet.posY));
-        let sumRadius = guard.radiusInner - bullet.radius;
+      for(var guard of guards){
+        var distance = euclidean((guard.posX - bullet.posX), (guard.posY - bullet.posY));
+        var sumRadius = guard.radiusInner - bullet.radius;
         if(distance < sumRadius) {//打中
           //消灭守卫
           //删除子弹
@@ -133,8 +133,8 @@ function update(modifier){
 }
 
 function main() {
-  let now = Date.now();
-  let delta = now - then;
+  var now = Date.now();
+  var delta = now - then;
 
   update(delta / 1000);
   draw();
@@ -144,6 +144,6 @@ function main() {
 }
 
 // 少年，开始游戏吧！
-let then = Date.now();
+var then = Date.now();
 init_canvas();
 main();
