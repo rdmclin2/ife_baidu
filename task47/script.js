@@ -1,14 +1,4 @@
-/**
- *  变量定义
- */
-let keysDown = {};
-let obstacles = [];
-let agent;
-let file;
-let guards = [];
-let bullets = [];
-let finder = new AStarFinder();
-let path = [];
+
 
 function findPath(startX, startY, endX, endY) {
   let grid = new Grid(block_width, block_height);
@@ -64,13 +54,13 @@ function update(modifier){
     let dest = path[0];
     //console.log("before : " + agent.x + " " + agent.y);
 
-    if(Math.floor(agent.posX / block_length) === dest[0] &&
-      Math.floor(agent.posY / block_length) === dest[1]) {
+    if(Math.floor((agent.posX-agent.radius) / block_length) === dest[0] &&
+      Math.floor((agent.posY-agent.radius) / block_length) === dest[1]) {
       agent.x = dest[0];
       agent.y = dest[1];
       //强制一致
-      agent.posX = agent.x * block_length;
-      agent.posY = agent.y * block_length;
+      agent.posX = agent.x * block_length + agent.radius;
+      agent.posY = agent.y * block_length + agent.radius;
 
       if(dest[0] === file.x && dest[1] === file.y) {
         init_canvas();
@@ -85,17 +75,33 @@ function update(modifier){
     //console.log("after: "  + agent.x + " " + agent.y);
   }
 
+  //守卫检测特工,发射子弹
   for(let guard of guards){
-    if(guard.detectAgent()){
+    if(guard.detectAgent() ){
       guard.shoot();
     }
   }
+  console.log("bullets  : " +bullets.length);
+  //让子弹飞
+  for(let bullet of bullets){
+    bullet.posX = bullet.posX + modifier* bullet.speed * bullet.dirX;
+    bullet.posY = bullet.posY + modifier* bullet.speed * bullet.dirY;
+
+    //判断有没有子弹打中特工
+    let distance = euclidean((agent.posX - bullet.posX), (agent.posY - bullet.posY));
+    let sumRadius = agent.radius + bullet.radius;
+    if(distance < sumRadius) {//打中
+      alert("you are dead");
+      init_canvas()
+    }
+  }
+
 
 }
 
 function main() {
-  var now = Date.now();
-  var delta = now - then;
+  let now = Date.now();
+  let delta = now - then;
 
   update(delta / 1000);
   draw();
@@ -105,6 +111,6 @@ function main() {
 }
 
 // 少年，开始游戏吧！
-var then = Date.now();
+let then = Date.now();
 init_canvas();
 main();

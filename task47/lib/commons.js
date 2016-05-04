@@ -15,6 +15,18 @@ const BLOCK_OBSTACLE = 3;
 const BLOCK_FILE = 4;
 
 /**
+ *  变量定义
+ */
+let keysDown = {};
+let obstacles = [];
+let agent;
+let file;
+let guards = [];
+let bullets = [];
+let finder = new AStarFinder();
+let path = [];
+
+/**
  * 创建canvas
  */
 let canvas = document.createElement("canvas");
