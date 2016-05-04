@@ -17,7 +17,6 @@ const BLOCK_FILE = 4;
 /**
  *  变量定义
  */
-let keysDown = {};
 let obstacles = [];
 let agent;
 let file;
