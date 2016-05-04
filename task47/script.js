@@ -13,7 +13,7 @@ function findPath(startX, startY, endX, endY) {
   return finder.findPath(startX, startY, endX, endY, grid);
 }
 
-canvas.addEventListener("click", function (event) {
+canvasGame.addEventListener("click", function (event) {
   if(pathes.length !== 0 ){
     console.log("正在寻路中");
     return ;
@@ -22,8 +22,8 @@ canvas.addEventListener("click", function (event) {
   let startX = agent.x;
   let startY = agent.y;
 
-  let endX = Math.floor((e.clientX - canvas.offsetLeft) / block_length);
-  let endY = Math.floor((e.clientY - canvas.offsetTop) / block_length);
+  let endX = Math.floor((e.clientX - canvasGame.offsetLeft) / block_length);
+  let endY = Math.floor((e.clientY - canvasGame.offsetTop) / block_length);
 
   for(let guard of guards){
     if(guard.x === endX && guard.y === endY){

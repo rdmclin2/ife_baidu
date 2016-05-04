@@ -62,8 +62,8 @@ Agent.prototype.detectObstacle = function (guard) {
     }
     i += dirX;
     j += dirY;
-    let endX = Math.floor((i - canvas.offsetLeft) / block_length);
-    let endY = Math.floor((j - canvas.offsetTop) / block_length);
+    let endX = Math.floor((i - canvasGame.offsetLeft) / block_length);
+    let endY = Math.floor((j - canvasGame.offsetTop) / block_length);
     if (boards[endY][endX] instanceof Obstacle) {
       return true;
     }

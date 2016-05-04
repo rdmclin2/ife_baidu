@@ -29,15 +29,15 @@ let pathes = [];
 /**
  * 创建canvas
  */
-let canvas = document.createElement("canvas");
-canvas.width = block_width * block_length;
-canvas.height = block_height * block_length;
-document.getElementById("container").appendChild(canvas);
+let canvasGame = document.createElement("canvas");
+canvasGame.width = block_width * block_length;
+canvasGame.height = block_height * block_length;
+document.getElementById("container").appendChild(canvasGame);
 
 /**
  * 获取背景
  */
-let ctx = canvas.getContext("2d");
+let ctx = canvasGame.getContext("2d");
 
 let boards = new Array(block_height);
 for (let i = 0; i < block_height; i++) {
