@@ -4,7 +4,7 @@
  * @param y
  *
  */
-let Bullet = function (i, j,color,dirX,dirY) {
+let Bullet = function (i, j,color,dirX,dirY,shooter) {
   this.posX = i ;
   this.posY = j ;
   this.dirX = dirX;
@@ -12,6 +12,7 @@ let Bullet = function (i, j,color,dirX,dirY) {
   this.speed = 256;
   this.radius = 4;
   this.color = color;
+  this.shooter= shooter;
 };
 
 Bullet.prototype.draw = function () {

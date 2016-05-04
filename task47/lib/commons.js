@@ -24,7 +24,7 @@ let file;
 let guards = [];
 let bullets = [];
 let finder = new AStarFinder();
-let path = [];
+let pathes = [];
 
 /**
  * 创建canvas
@@ -48,9 +48,13 @@ for (let i = 0; i < block_height; i++) {
  * 初始化面板
  * @type {Array}
  */
-let init_canvas = function () {
+init_canvas = function () {
   obstacles = [];
   guards = [];
+  bullets = [];
+  pathes = [];
+
+
   //最底层 铺地和墙
   for (let i = 0; i < block_width; i++) {
     for (let j = 0; j < block_height; j++) {

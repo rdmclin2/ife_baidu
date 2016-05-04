@@ -9,7 +9,7 @@ let Guard= function (i, j) {
   this.radiusInner = (block_length) / 2;
   this.posX = this.x * block_length +this.radiusInner;
   this.posY = this.y* block_length +this.radiusInner;
-  this.radiusOut = block_length * 2;
+  this.radiusOut = block_length * 5;
   this.colorInner = '#f3634f';
   this.colorOut= "rgba(231, 192, 174, 0.5)";
   this.colorBorder = '#ba8479';
@@ -38,6 +38,15 @@ Guard.prototype.draw = function () {
   ctx.fill();
 }
 
+Guard.prototype.lineToAgent = function(){
+  ctx.fillStyle = this.colorBullet;
+  ctx.beginPath();
+  ctx.moveTo(this.posX,this.posY);
+  ctx.lineTo(agent.posX ,agent.posY);
+  ctx.closePath();
+  ctx.stroke();
+}
+
 Guard.prototype.shoot = function(){
   let now = Date.now();
   let delta = now - this.gunFireTime;
@@ -48,7 +57,7 @@ Guard.prototype.shoot = function(){
   let distance = euclidean((agent.posX - this.posX), (agent.posY - this.posY));
   let dirX = (agent.posX - this.posX) / distance;
   let dirY = (agent.posY - this.posY) / distance;
-  let bullet = new Bullet(this.posX,this.posY,this.colorBullet,dirX,dirY);
+  let bullet = new Bullet(this.posX,this.posY,this.colorBullet,dirX,dirY,this);
   bullets.push(bullet);
   this.gunFireTime = Date.now();
 }
@@ -57,6 +66,23 @@ Guard.prototype.detectAgent= function(){
   let distance = euclidean((agent.posX - this.posX), (agent.posY - this.posY));
   let sumRadius = agent.radius + this.radiusOut;
   if(distance < sumRadius) {
+    let dirX = (agent.posX - this.posX) / distance;
+    let dirY = (agent.posY - this.posY) / distance;
+    let i  = this.posX;
+    let j  = this.posY;
+    console.log(dirX,dirY);
+
+    while(true){
+      let disLine=  euclidean((i - this.posX), (j - this.posY));
+      if(disLine > distance){break;}
+      i += dirX ;
+      j += dirY ;
+      let endX = Math.floor((i - canvas.offsetLeft) / block_length);
+      let endY = Math.floor((j - canvas.offsetTop) / block_length);
+      if(boards[endY][endX] instanceof Obstacle){
+        return false;
+      }
+    }
     return true;
   }else{
     return false;

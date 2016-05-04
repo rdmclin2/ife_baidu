@@ -14,7 +14,7 @@ function findPath(startX, startY, endX, endY) {
 }
 
 canvas.addEventListener("click", function (event) {
-  if(path.length !== 0 ){
+  if(pathes.length !== 0 ){
     console.log("正在寻路中");
     return ;
   }
@@ -25,33 +25,45 @@ canvas.addEventListener("click", function (event) {
   let endX = Math.floor((e.clientX - canvas.offsetLeft) / block_length);
   let endY = Math.floor((e.clientY - canvas.offsetTop) / block_length);
 
-  path = findPath(startX, startY, endX, endY);
-  console.log(JSON.stringify(path));
+  for(let guard of guards){
+    if(guard.x === endX && guard.y === endY){
+      agent.shoot(guard);
+      return ;
+    }
+  }
+
+  pathes = findPath(startX, startY, endX, endY);
+  console.log(JSON.stringify(pathes));
 
 });
 
 function draw() {
+
+
   for (let i = 0; i < block_height; i++) {
     for (let j = 0; j < block_width; j++) {
       boards[i][j].draw();
     }
   }
-  agent.draw();
-  file.draw();
+
 
   for(let guard of guards){
     guard.draw();
+    guard.lineToAgent();
   }
 
   for(let bullet of bullets){
     bullet.draw();
   }
+
+  agent.draw();
+  file.draw();
 }
 
 function update(modifier){
   //寻路
-  if(path.length !== 0) {
-    let dest = path[0];
+  if(pathes.length !== 0) {
+    let dest = pathes[0];
     //console.log("before : " + agent.x + " " + agent.y);
 
     if(Math.floor((agent.posX-agent.radius) / block_length) === dest[0] &&
@@ -65,7 +77,7 @@ function update(modifier){
       if(dest[0] === file.x && dest[1] === file.y) {
         init_canvas();
       }
-      path.shift();
+      pathes.shift();
     }else {
       var dirX = dest[0] - agent.x;
       var dirY = dest[1] - agent.y;
@@ -81,19 +93,40 @@ function update(modifier){
       guard.shoot();
     }
   }
-  console.log("bullets  : " +bullets.length);
   //让子弹飞
   for(let bullet of bullets){
     bullet.posX = bullet.posX + modifier* bullet.speed * bullet.dirX;
     bullet.posY = bullet.posY + modifier* bullet.speed * bullet.dirY;
 
-    //判断有没有子弹打中特工
-    let distance = euclidean((agent.posX - bullet.posX), (agent.posY - bullet.posY));
-    let sumRadius = agent.radius + bullet.radius;
-    if(distance < sumRadius) {//打中
-      alert("you are dead");
-      init_canvas()
+    //判断有没有撞墙
+
+
+    if(bullet.shooter instanceof Guard){
+      //判断有没有子弹打中特工
+      let distance = euclidean((agent.posX - bullet.posX), (agent.posY - bullet.posY));
+      let sumRadius = agent.radius - bullet.radius;
+      if(distance < sumRadius) {//打中
+        alert("you are dead");
+        init_canvas()
+      }
+    }else if(bullet.shooter instanceof Agent){
+      //判断有没有子弹打中守卫
+      for(let guard of guards){
+        let distance = euclidean((guard.posX - bullet.posX), (guard.posY - bullet.posY));
+        let sumRadius = guard.radiusInner - bullet.radius;
+        if(distance < sumRadius) {//打中
+          //消灭守卫
+          //删除子弹
+          guards.splice(guards.indexOf(guard),1);
+          bullets.splice(bullets.indexOf(bullet),1);
+          break;
+        }
+      }
     }
+
+
+
+
   }
 
 
